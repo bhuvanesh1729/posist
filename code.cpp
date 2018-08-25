@@ -14,7 +14,7 @@ typedef struct tm {
    int tm_wday;  // days since sunday
    int tm_yday;  // days since January 1st
    int tm_isdst; // hours of daylight savings time
-}tm;
+};
 
 typedef struct node
 {
@@ -29,7 +29,7 @@ typedef struct node
  node *genesisId;
  string hash;
  int val;
-}node
+}
 ;
 string encryption(string str)
 {
@@ -177,17 +177,58 @@ int  findlongestchain(node *ptr)
 
 void merge(node *n1, node *n2)
 {
-    n1->child.pushback(n2);
+    
     if(findlongestchain(n1)>=findlongestchain(n1))
-    {
-        for(int i=0;i<n2->parentId->child.size();i++);
+    {	
+	n1->val+=n2->val;
+	for(int i=0;i<n2->child.size();i++)
+        {
+		n1->child.push_back(n2.child[i]);
+	}
+        for(int i=0;i<n2->parentId->child.size();i++)
         {
             if(n2->parentId->child[i]==n2)
             {
-                n2->parentId->child[i]
+                n2->parentId->child[i]=NULL;
+		break;
             }
         }
+		vector <string> tokens;
+        	stringstream check1(n1->data);
+       		 string intermediate;
+        	while(getline(check1, intermediate, ','))
+        	{
+            		tokens.push_back(intermediate);
+        	}
+		tokens[2]=n1->val;
+		n2->data=tokens[0]+tokens[1]+tokens[2];	
     }
+	else
+	{
+		n2->val+=n1->val; 	
+		for(int i=0;i<n1->child.size();i++)
+        	{
+			n2->child.push_back(n1.child[i]);
+		}
+		for(int i=0;i<n1->parentId->child.size();i++)
+        	{
+            		if(n1->parentId->child[i]==n1)
+            		{
+                		n1->parentId->child[i]=NULL;
+				break;
+            		}
+        	}
+		vector <string> tokens;
+        	stringstream check1(n2->data);
+       		 string intermediate;
+        	while(getline(check1, intermediate, ','))
+        	{
+            		tokens.push_back(intermediate);
+        	}
+		tokens[2]=n2->val;
+		n2->data=tokens[0]+tokens[1]+tokens[2];
+        
+	}
 }
 
 
@@ -323,7 +364,7 @@ int main() {
                 }
                 break;
                 
-    case 5:cout>>findlongestchain(genesis);break;
+    case 5:cout<<findlongestchain(genesis);break;
     case 6:cout<<"enter the owner id, owner name , value"<<endl;
             string sl;
             cin>>sl;
